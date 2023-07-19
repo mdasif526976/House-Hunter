@@ -1,7 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import "./Signup.css";
-import background from "../../../images/background.png";
 const Signup = () => {
   const {
     handleSubmit,
@@ -11,46 +10,112 @@ const Signup = () => {
   } = useForm();
   const signup = (data) => {
     console.log(data);
-    fetch("http://localhost:5000/user", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((userData) => {
-        if (userData.message) {
-          alert(userData.message);
-          return;
-        }
-        console.log(userData);
-        localStorage.setItem("userdata", JSON.stringify(userData));
-      })
-      .catch((err) => console.log(err));
+    console.log("dfs");
+    // fetch("http://localhost:5000/user", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(data),
+    // })
+    //   .then((res) => res.json())
+    //   .then((userData) => {
+    //     if (userData.message) {
+    //       alert(userData.message);
+    //       return;
+    //     }
+    //     console.log(userData);
+    //     localStorage.setItem("userdata", JSON.stringify(userData));
+    //   })
+    //   .catch((err) => console.log(err));
   };
   const user = localStorage.getItem("userData");
   console.log(user);
-  const myStyle = {
-    backgroundImage: `url(${background})`,
-    backgroundRepeat: "no-repeat",
-  };
   return (
-    <div className="flex justify-center items-center h-screen ">
+    <div className="flex justify-center items-center h-screen">
       <form
-        style={myStyle}
-        className="flex flex-col w-80  h-80 p-5 rounded-xl shadow"
+        className=" py-3 flex rounded-xl border border-yellow-500 p-5 flex-col w-[400px] "
         onSubmit={handleSubmit(signup)}
       >
-        <h1 className="text-center border-b-2 pb-4 text-xl">Signup Now</h1>
+        <h1 className="text-center mt-2 py-0 font-bold text-2xl">Signup Now</h1>
 
-        <div className="flex flex-col">
-          <label htmlFor="">Name</label>
-          <input type="text" {...register("name")} />
+        <div className=" py-4 flex flex-col ">
+          <input
+            className="focus:outline-none border-b-2 border-yellow-500 py-2"
+            type="text"
+            placeholder="Enter your name here"
+            {...register("name", { required: "This Feild is required" })}
+          />
+          {errors.name && (
+            <p className="text-red-500 mb-1" role="alert">
+              {errors.name?.message}.
+            </p>
+          )}
         </div>
-        <div className="flex flex-col">
-          <label htmlFor="">Email</label>
-          <input type="email" {...register("email")} />
+        <div className=" py-4 flex flex-col">
+          <input
+            className="focus:outline-none border-b-2 border-yellow-500 py-2"
+            placeholder="Enter your email here"
+            type="email"
+            {...register("email", { required: "Enter your Email" })}
+          />
         </div>
-        <input className="" type="submit" value="Submit" />
+        <div className=" py-4 flex flex-col">
+          <label className="pb-4" htmlFor="">
+            Account Type
+          </label>
+          <select
+            className="py-4 rounded focus:outline-none px-5 bg-white border-yellow-500 border"
+            defaultValue="houseRenter"
+            type="text"
+            {...register("account-type")}
+          >
+            <option className=" focus:outline-none" value="houseRenter">
+              House Renter
+            </option>
+            <option value="houseOwner">House Owner</option>
+          </select>
+        </div>
+        <div className=" py-4 flex flex-col ">
+          <input
+            className="focus:outline-none border-b-2 border-yellow-500 py-2"
+            type="numbar"
+            placeholder="Enter your phoneNumbar here"
+            {...register("phoneNumbar", {
+              required: "This Feild is required",
+              maxLength: {
+                value: 14,
+                message: "Phone Numbar must be Bangladeshi sim",
+              },
+            })}
+          />
+          {errors.phoneNumbar && (
+            <p className="text-red-500 mb-1">{errors.phoneNumbar?.message}.</p>
+          )}
+        </div>
+        <div className=" py-4 flex flex-col ">
+          <input
+            className="focus:outline-none border-b-2 border-yellow-500 py-2"
+            type="password"
+            placeholder="Enter your password here"
+            {...register("password", {
+              required: "Enter your Password",
+              minLength: {
+                value: 8,
+                message:
+                  "Your password must be at least 8 characters or longer",
+              },
+            })}
+          />
+          {errors.password && (
+            <p className="text-red-500 mb-1">{errors.password?.message}.</p>
+          )}
+        </div>
+        <input
+          className="w-full mt-4 py-4 text-white text-xl font-bold
+          hover:text-yellow-500 hover:bg-white hover:border hover:border-yellow-400
+           bg-yellow-500 rounded"
+          type="submit"
+          value="Submit"
+        />
       </form>
     </div>
   );

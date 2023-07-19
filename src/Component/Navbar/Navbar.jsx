@@ -5,7 +5,7 @@ import "aos/dist/aos.css"; // You can also use <link> for styles
 import Menu from "./Menu";
 // ..
 AOS.init();
-const Navbar = () => {
+const Navbar = ({ modalToggle }) => {
   const [isOpen, setOpen] = useState(false);
   return (
     <div className="p-8 bg-white">
@@ -19,6 +19,7 @@ const Navbar = () => {
         </div>
         <div className="rightMenu">
           <button
+            onClick={() => modalToggle()}
             className="flex items-center gap-1 text-xl font-semibold border-2
           p-3 rounded-xl text-yellow-500 hover:bg-yellow-500 hover:text-white border-yellow-500"
           >
